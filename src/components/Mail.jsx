@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRef } from 'react';
 import emailjs from '@emailjs/browser';
 import { BiArrowBack } from "react-icons/bi";
+import Toast from "./Toast";
 
 const Mail = ({ setVisible }) => {
     const formRef = useRef();
@@ -11,6 +12,11 @@ const Mail = ({ setVisible }) => {
         message: ""
     });
     const [loading, setLoading] = useState(false);
+    const [toast, setToast] = useState({ show: false, message: "", type: "success" });
+
+    useEffect(() => {
+        emailjs.init('9Vk0P0ifs9-GHU4j2');
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,6 +25,15 @@ const Mail = ({ setVisible }) => {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
+        
+        if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+            setToast({ show: true, message: "Please fill in all fields!", type: "error" });
+            setTimeout(() => {
+                setToast({ show: false, message: "", type: "error" });
+            }, 3000);
+            return;
+        }
+
         setLoading(true);
         emailjs.send(
             'service_lfwdadq',
@@ -33,29 +48,59 @@ const Mail = ({ setVisible }) => {
             '9Vk0P0ifs9-GHU4j2'
         ).then(() => {
             setLoading(false);
-            alert('Thank you. I will get back to you as soon as possible.');
+            setToast({ show: true, message: "Send successfully!", type: "success" });
             setForm({
                 name: "",
                 email: "",
                 message: ""
-            })
+            });
+            setTimeout(() => {
+                setToast({ show: false, message: "", type: "success" });
+            }, 3000);
         }, (error) => {
             setLoading(false);
-            console.log(error);
-            alert('Something went wrong!')
+            console.error('EmailJS Error:', error);
+            let errorMessage = "Something went wrong!";
+            
+            const errorText = error?.text || error?.message || '';
+            
+            if (error.status === 412) {
+                if (errorText.includes('Gmail_API') || errorText.includes('Invalid grant')) {
+                    errorMessage = "Gmail connection expired. Go to EmailJS dashboard → Email Services → Reconnect Gmail account.";
+                } else {
+                    errorMessage = "EmailJS configuration error. Please check your service settings.";
+                }
+            } else if (error.status === 400) {
+                errorMessage = "Invalid email format or missing required fields.";
+            } else if (error.status === 403) {
+                errorMessage = "EmailJS service access denied. Please check your API key.";
+            } else if (errorText) {
+                errorMessage = errorText;
+            }
+            
+            setToast({ show: true, message: errorMessage, type: "error" });
+            setTimeout(() => {
+                setToast({ show: false, message: "", type: "error" });
+            }, 6000);
         })
 
     }
     return (
-
-        <form
-            ref={formRef}
-            onSubmit={handleSubmit}
-            className='relative mt-12 flex flex-col gap-8'
-        >
-            <div className='absolute -inset-10 flex justify-end me-10 card-img_hover'>
+        <>
+            <Toast
+                show={toast.show}
+                message={toast.message}
+                type={toast.type}
+                onClose={() => setToast({ show: false, message: "", type: toast.type })}
+            />
+            <form
+                ref={formRef}
+                onSubmit={handleSubmit}
+                className='relative mt-12 flex flex-col gap-8'
+            >
+            <div className='absolute -top-10 right-0 flex justify-end pointer-events-none'>
                 <div
-                    className='bg-black w-10 h-10 rounded-full flex justify-center items-center cursor-pointer' title="Back"
+                    className='bg-black w-10 h-10 rounded-full flex justify-center items-center cursor-pointer pointer-events-auto z-10' title="Back"
                     onClick={() => setVisible(prev => !prev)}>
                     <BiArrowBack className='w-2/3 h-2/3 object-contain text-white' />
                 </div>
@@ -95,7 +140,7 @@ const Mail = ({ setVisible }) => {
             </label>
             <button type='submit' className='bg-[#151030] py-3 px-4 outline-none w-fit text-white font-bold shadow-md shadow-primary rounded-xl'>{loading ? 'Sending...' : "Send"}</button>
         </form>
-
+        </>
     )
 }
 
