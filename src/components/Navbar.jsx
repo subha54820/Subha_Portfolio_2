@@ -269,7 +269,7 @@ const Navbar = () => {
                             variants={iconVariants}
                             whileHover="hover"
                             whileTap="tap"
-                            href="mailto:pradahn.subhalaxmi9178@gmail.com"
+                            href="mailto:pradhan.subhalaxmi9178@gmail.com"
                             className={`p-2 rounded-lg border transition-all ${
                                 isDarkMode
                                     ? 'bg-red-500/20 hover:bg-red-500/40 border-red-500/30 text-red-400 hover:text-red-300'
@@ -312,7 +312,7 @@ const Navbar = () => {
                             variants={iconVariants}
                             whileHover="hover"
                             whileTap="tap"
-                            href="mailto:pradahn.subhalaxmi9178@gmail.com"
+                            href="mailto:pradhan.subhalaxmi9178@gmail.com"
                             className={`transition-colors ${
                                 isDarkMode 
                                     ? 'text-neutral-400 hover:text-red-500' 

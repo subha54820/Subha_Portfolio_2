@@ -60,5 +60,5 @@ export const CONTACT = {
   address1: "Bhubaneswar, Odisha",
   address2: "India",
   phoneNo: "+91 8117839357",
-  email: "pradahn.subhalaxmi9178@gmail.com",
+  email: "pradhan.subhalaxmi9178@gmail.com",
 };

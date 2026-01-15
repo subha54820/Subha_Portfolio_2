@@ -40,7 +40,7 @@ const Contact = () => {
     }
 
     return (
-        <div className={`pb-20 m-10 transition-colors duration-300`}>
+        <div className={`pb-20 m-4 sm:m-10 transition-colors duration-300`}>
             <motion.h1
                 whileInView={{ opacity: 1, y: 0 }}
                 initial={{ opacity: 0, y: -100 }}
@@ -58,11 +58,11 @@ const Contact = () => {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
-                className='flex flex-wrap overflow-hidden justify-center items-center gap-5'
+                className='flex flex-wrap justify-center items-center gap-5'
                 id='mail'>
                 <motion.div
                     variants={itemVariants}
-                    className="text-center tracking-tighter xl:flex-[0.75]">
+                    className="text-center tracking-tighter xl:flex-[0.75] px-4">
                     <motion.p
                         variants={itemVariants}
                         whileHover={{ scale: 1.05, x: 10 }}
@@ -80,7 +80,7 @@ const Contact = () => {
                         whileHover={{ scale: 1.1, y: -5 }}
                         whileTap={{ scale: 0.95 }}
                         href="#mail"
-                        className="border-b transition-colors inline-block"
+                        className="border-b transition-colors inline-block break-all sm:break-normal my-4"
                         style={{ 
                             borderColor: theme.primary + '40',
                             color: 'inherit'

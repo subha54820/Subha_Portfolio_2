@@ -27,7 +27,7 @@ const Mail = ({ setVisible }) => {
                 from_name: form.name,
                 to_name: 'Subhalaxmi',
                 from_email: form.email,
-                to_email: "pradahn.subhalaxmi9178@gmail.com",
+                to_email: "pradhan.subhalaxmi9178@gmail.com",
                 message: form.message
             },
             '9Vk0P0ifs9-GHU4j2'
